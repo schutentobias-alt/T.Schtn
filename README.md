@@ -1,2 +1,16 @@
-# T.Schtn
-seat generator 
+<!doctype html><html lang='de'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Autositz-App</title><style>body{font-family:system-ui;max-width:720px;margin:auto;padding:16px}input,button{width:100%;padding:12px;margin:6px 0;font-size:16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{border:1px solid #ccc;border-radius:10px;padding:10px}</style></head><body><h1>🚗 Autositz-App</h1><p>Namen werden automatisch gespeichert.</p><div id='ins'></div><button onclick='mix()'>🎲 Neu mischen</button><button onclick='shareRes()'>📤 Teilen</button><div class='grid'><div class='card'><h3>Auto 1</h3><div id='c1'></div></div><div class='card'><h3>Auto 2</h3><div id='c2'></div></div></div><script>
+const ids=[1,2,3,4,5,6];
+const box=document.getElementById('ins');
+ids.forEach(i=>{let inp=document.createElement('input');inp.id='n'+i;inp.placeholder='Name '+i;inp.value=localStorage.getItem(inp.id)||'';inp.oninput=()=>localStorage.setItem(inp.id,inp.value);box.appendChild(inp);});
+let last='';
+function mix(){let n=ids.map(i=>document.getElementById('n'+i).value.trim());if(n.some(x=>!x)){alert('Bitte alle Namen eingeben');return;}for(let i=n.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[n[i],n[j]]=[n[j],n[i]];}last=`🚗 Auto 1
+Fahrer: ${n[0]}
+Beifahrer: ${n[1]}
+Hinten: ${n[2]}
+
+🚙 Auto 2
+Fahrer: ${n[3]}
+Beifahrer: ${n[4]}
+Hinten: ${n[5]}`;c1.innerHTML=`<b>Fahrer:</b> ${n[0]}<br><b>Beifahrer:</b> ${n[1]}<br><b>Hinten:</b> ${n[2]}`;c2.innerHTML=`<b>Fahrer:</b> ${n[3]}<br><b>Beifahrer:</b> ${n[4]}<br><b>Hinten:</b> ${n[5]}`;}
+async function shareRes(){if(!last){mix();if(!last)return;}if(navigator.share){navigator.share({text:last});}else{navigator.clipboard.writeText(last);alert('Ergebnis in die Zwischenablage kopiert.');}}
+</script></body></html>
